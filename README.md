@@ -4,4 +4,8 @@ npm install -g webpack
 
 npm install 
 
-webpack
+npm install -g live-server
+
+webpack -w
+
+live-server
