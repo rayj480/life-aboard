@@ -130,7 +130,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background-color: red; }\n", ""]);
+	exports.push([module.id, "body {\n  background-color: green; }\n", ""]);
 	
 	// exports
 
