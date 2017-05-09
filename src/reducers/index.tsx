@@ -13,7 +13,11 @@ var automatiques = (state:any = [], action:any = {}) => {
                 date: action.date, 
                 montant: action.montant, 
                 categorie: action.categorie
-            }]    
+            }]
+        case "del_automatique":
+            if(state.id !== action.automatique_id){
+                return state
+            }    
         default:
             return state;
     }
@@ -32,7 +36,10 @@ var operations = (state:any = [], action:any = {}) => {
                 type: action.type, 
                 nomte_frais: action.note_frais
             }]
-    
+        case "del_operation": 
+            if(state.id !== action.operation_id){
+                return state
+            }
         default:
             return state;
     }
@@ -61,11 +68,19 @@ var comptes = (state:any = [], action:any = {}) => {
                     return operations(c.operations, action)
                 }
             })
+        case "del_operation":
+            return state.map((c:any) => {
+                return operations(c.operations, action)
+            })
         case "add_automatique": 
             return state.map((c:any) => {
                 if(c.id === action.compte_id){
                     return automatiques(c.automatiques, action)
                 }
+            })
+        case "del_automatique":
+            return state.map((c:any) => {
+                return automatiques(c.automatiques, action)
             })
         default:
             break;
@@ -115,44 +130,5 @@ var profils = (state:any = [], action:any = {}) => {
     }
 }
 
-var initialState = [
-    {
-        id: uuidV4(), 
-        title: 'first task', 
-        checked: false
-    },
-    {
-        id: uuidV4(), 
-        title: 'second task', 
-        checked: false
-    }
-]
-
-
-var tache = (state:Tache = {}, action:any) => {
-    switch (action.type) {
-        case 'DEL_TACHE':
-            if(state.id !== action.id){
-                return state
-            }
-        default:
-            return {}
-    }
-}
-
-var taches = (state:Tache[] = initialState, action:any) => {
-    switch (action.type) {
-        case 'ADD_TACHE':
-            return [...state, {
-                id: uuidV4(), 
-                title: action.title, 
-                checked: false
-            }]
-        case 'DEL_TACHE':
-            return _.reject(state, (t:Tache) => t.id === action.id)
-        default:
-            return initialState
-    }
-}
 
 export var tachesReducer = combineReducers({profils})
